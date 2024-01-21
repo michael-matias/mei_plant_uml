@@ -1,0 +1,36 @@
+@startuml C4_Code
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(iotDevice, "IoT Device", "Arduino & Quectel BG96")
+Container(cloudService, "Cloud Service", "Generic Cloud Platform")
+Container(frontend, "Frontend", "Angular", "Provides user interface.")
+
+Component(arduinoCode, "Arduino Code", "C/C++", "Handles device programming.")
+Component(nodeRed, "Node-RED", "JavaScript", "Simulates IoT device requests.")
+Component(udpService, "UDP Service", "Node.js", "Receives and processes data from IoT device.")
+Component(apiGateway, "API Gateway", "Node.js", "Manages API requests and user authentication.")
+Component(databaseModel, "Database Model", "MongoDB Schema", "Represents data structure.")
+Component(kafkaProducer, "Kafka Producer", "Node.js", "Sends data to Kafka.")
+Component(kafkaConsumer, "Data Processing Service", "Node.js", "Processes data from Kafka and stores in MongoDB.")
+Component(deviceInfoService, "Device Info Service", "Node.js", "Manages device data.")
+Component(userAuthService, "User Authentication Service", "Node.js", "Handles user authentication.")
+Component(userInfoService, "User Info Service", "Node.js", "Manages user data.")
+Component(apiKeyService, "API Key Service", "Node.js", "Manages API keys.")
+
+Rel(arduinoCode, udpService, "Sends data")
+Rel(nodeRed, udpService, "Sends simulated data")
+Rel(udpService, kafkaProducer, "Forwards data to Kafka")
+Rel(kafkaProducer, kafkaConsumer, "Sends data")
+Rel(kafkaConsumer, databaseModel, "Processes and stores data")
+Rel(apiGateway, deviceInfoService, "Interacts")
+Rel(apiGateway, userAuthService, "Interacts")
+Rel(apiGateway, userInfoService, "Interacts")
+Rel(apiGateway, apiKeyService, "Interacts")
+Rel(deviceInfoService, databaseModel, "Reads/Writes data")
+Rel(userAuthService, databaseModel, "Reads/Writes data")
+Rel(userInfoService, databaseModel, "Reads/Writes data")
+Rel(apiKeyService, databaseModel, "Reads/Writes data")
+Rel(frontend, apiGateway, "Sends requests")
+
+LAYOUT_LEFT_RIGHT()
+@enduml

@@ -1,0 +1,19 @@
+@startuml C4_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(developer, "Developer", "A developer who interacts with the system.")
+Person(businessUser, "Business User", "A business user who utilizes the system for tracking and monitoring.")
+
+System(iotSystem, "IoT System", "The main IoT system handling data transmission and processing.")
+System_Ext(nosNetwork, "NOS Network", "Telecommunications network for IoT data transfer.")
+System_Ext(gcp, "Google Cloud Platform", "Cloud platform used for data processing and storage.")
+System_Ext(aws, "AWS", "Cloud platform used post-mental health break.")
+
+Rel(developer, iotSystem, "Uses")
+Rel(businessUser, iotSystem, "Uses")
+Rel(iotSystem, nosNetwork, "Connects/Interacts")
+Rel(iotSystem, gcp, "Connects/Interacts")
+Rel(iotSystem, aws, "Connects/Interacts post-break")
+
+LAYOUT_LEFT_RIGHT()
+@enduml

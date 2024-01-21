@@ -1,0 +1,33 @@
+@startuml C4_Component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(iotDevice_NodeRed, "IoT Device/Node-RED", "Arduino & Quectel BG96/Node-RED")
+Container(cloudPlatform, "Cloud Platform", "Generic Cloud Service")
+ContainerDb(database, "Database", "MongoDB", "Stores device and user data.")
+Container(frontend, "Frontend", "Angular", "Provides user interface.")
+
+Component(udpService, "UDP Service", "Receives data from IoT device/Node-RED.")
+Component(kafkaService, "Kafka Service", "Manages data streams.")
+Component(dataProcessing, "Data Processing Service", "Processes incoming data for storage.")
+Component(apiGateway, "API Gateway", "Manages API and regular requests, authenticates JWT.")
+Component(apiKeyService, "API Key Service", "Manages API keys.")
+Component(deviceInfoService, "Device Info Service", "Manages device data.")
+Component(userAuthService, "User Authentication Service", "Handles user authentication.")
+Component(userInfoService, "User Info Service", "Manages user information.")
+
+Rel(iotDevice_NodeRed, udpService, "Transmits data")
+Rel(udpService, kafkaService, "Sends data")
+Rel(kafkaService, dataProcessing, "Streams data")
+Rel(dataProcessing, database, "Stores processed data")
+Rel(frontend, apiGateway, "Sends requests")
+Rel(apiGateway, apiKeyService, "Validates API keys")
+Rel(apiGateway, deviceInfoService, "Queries device data")
+Rel(apiGateway, userAuthService, "Authenticates users")
+Rel(apiGateway, userInfoService, "Accesses user info")
+Rel(apiKeyService, database, "Reads/Writes API key data")
+Rel(deviceInfoService, database, "Reads/Writes device data")
+Rel(userAuthService, database, "Reads/Writes user auth data")
+Rel(userInfoService, database, "Reads/Writes user info data")
+
+LAYOUT_LEFT_RIGHT()
+@enduml

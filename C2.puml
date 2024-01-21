@@ -1,0 +1,21 @@
+@startuml C4_Container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(developer, "Developer", "Interacts with the system through APIs.")
+Person(businessUser, "Business User", "Utilizes the platform for tracking and monitoring.")
+
+System_Boundary(iotSystem, "IoT System") {
+    Container(iotDevice, "IoT Device/Node-RED", "Arduino & Quectel BG96/Node-RED", "Collects and transmits data or simulates data transmission.")
+    Container(vpnGateway, "VPN Gateway", "Manages secure data transmission from IoT device to the cloud.")
+    Container(cloudPlatform, "Cloud Platform", "Generic Cloud Service", "Processes and stores data, hosts API and frontend.")
+    Container(apiFrontend, "API & Frontend", "Interface for data access and visualization.")
+}
+
+Rel(developer, apiFrontend, "Uses APIs")
+Rel(businessUser, apiFrontend, "Uses Platform")
+Rel(iotDevice, vpnGateway, "Transmits data")
+Rel(vpnGateway, cloudPlatform, "Secure connection for data transmission")
+Rel(cloudPlatform, apiFrontend, "Provides data to")
+
+LAYOUT_LEFT_RIGHT()
+@enduml
